@@ -1,33 +1,23 @@
 from app.main import get_human_age
+import pytest
 
 
-def test_if_result_0() -> None:
-    assert get_human_age(0, 0) == [0, 0]
+@pytest.mark.parametrize("cat_age,dog_age, expected", [
+                        (0, 0, [0, 0]),
+                        (14, 14, [0, 0]),
+                        (15, 15, [1, 1]),
+                        (28, 28, [3, 2]),
+                        (100, 100, [21, 17]),
+                        (24,15, [2, 1]),
+                        (23, 23, [1, 1]),
+                        (24, 24, [2, 2]),
+                        (-1, 0, [0, 0]),
+                        (200, 200, [46, 37])
+                    ])
 
+def test_get_human_age(cat_age: int, dog_age: int, expected: list) -> None:
+    assert get_human_age(cat_age, dog_age) == expected
 
-def test_almost_1() -> None:
-    assert get_human_age(14, 14) == [0, 0]
-
-
-def test_first_human_year() -> None:
-    assert get_human_age(15, 15) == [1, 1]
-
-
-def test_different_age_result() -> None:
-    assert get_human_age(28, 28) == [3, 2]
-
-
-def test_100_years() -> None:
-    assert get_human_age(100, 100) == [21, 17]
-
-
-def test_does_not_exchange_cat_dog() -> None:
-    assert get_human_age(24, 15) == [2, 1]
-
-
-def test_first_year_cat_dog() -> None:
-    assert get_human_age(23, 23) == [1, 1]
-
-
-def test_second_year_cat_dog() -> None:
-    assert get_human_age(24, 24) == [2, 2]
+def test_srt_error():
+    with pytest.raises(TypeError):
+        get_human_age("a", 0)
